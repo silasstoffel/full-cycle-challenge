@@ -1,0 +1,44 @@
+version: '3.7'
+
+services:
+  db:
+    container_name: 'full-cycle-db'
+    image: 'postgres'
+    ports:
+      - '5433:5432'
+    environment:
+      - POSTGRES_USER=fullcycle
+      - POSTGRES_PASSWORD=fullcycle
+      - POSTGRES_DB=fullcycle
+    networks:
+      - full-cycle-network
+  
+  app:
+     build:
+        context: .
+        dockerfile: ./infrastructure/node/Dockerfile
+     container_name: 'full-cycle-node'
+     volumes:
+      - .:/usr/app 
+     networks:
+      - full-cycle-network
+     depends_on:
+      - db      
+
+  nginx:
+     build:
+        context: .
+        dockerfile: ./infrastructure/nginx/Dockerfile
+     container_name: 'full-cycle-ngnix'
+     restart: always
+     ports:
+      - '8080:80'
+     depends_on:
+      - db
+      - app
+     networks:
+      - full-cycle-network       
+
+networks:
+  full-cycle-network:
+    external: true
