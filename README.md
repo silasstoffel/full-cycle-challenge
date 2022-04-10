@@ -23,8 +23,5 @@ Run builded image
 Automatic setup
 
 ```shell
-npm install
-
-# docker-compose
- docker compose up
+ docker-compose up
 ```
