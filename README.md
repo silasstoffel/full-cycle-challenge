@@ -23,16 +23,6 @@ Run builded image
 Automatic setup
 
 ```shell
-$ ./infrastructure/scripts/setup.sh
-```
-
-Manual setup
-
-```shell
-# Create network
-docker network create full-cycle-network
-
-# Install dependencies
 npm install
 
 # docker-compose

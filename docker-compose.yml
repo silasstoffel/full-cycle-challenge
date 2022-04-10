@@ -11,17 +11,18 @@ services:
       - POSTGRES_PASSWORD=fullcycle
       - POSTGRES_DB=fullcycle
     networks:
-      - full-cycle-network
+      - default
   
   app:
      build:
         context: .
         dockerfile: ./infrastructure/node/Dockerfile
      container_name: 'full-cycle-node'
-     volumes:
-      - .:/usr/app 
+     entrypoint: dockerize -wait tcp://db:5432 -timeout=30s node index.js 
+     #volumes:
+     # - .:/usr/app 
      networks:
-      - full-cycle-network
+      - default
      depends_on:
       - db      
 
@@ -37,8 +38,4 @@ services:
       - db
       - app
      networks:
-      - full-cycle-network       
-
-networks:
-  full-cycle-network:
-    external: true
+      - default
